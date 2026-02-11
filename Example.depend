@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1769592331 source:e:\susl academic\1st year\1st semester\structured programming (c programming)\group project\example\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
