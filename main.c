@@ -7,18 +7,19 @@
     //char *destinationAr[]={"Thailand","Dubai","Singapore","London","Bangkok","Tokyo","Pris","Sydney","Indonesia","Canada"};
     char destinationAr[10][10]={"Thailand","Dubai","Singapore","London","Bangkok","Tokyo","Pris","Sydney","Indonesia","Canada"};
     int Av_seatsAr[]={25,10,18,12,20,15,8,6,22,14};
+
     float economy_priceAr[]={15000.00,45000.00,38000.00,95000.00,28000.00,72000.00,88000.00,99000.00,32000.00,41000.00};
     float businessClass_priceAr[]={300000.00,450000.00,300000.00,550000.00,600000.00,570000.00,420000.00,430000.00,540000.00,600000.00};
     float fristClass_priceAr[]={1200000.00,1100000.00,1400000.00,1800000.00,1250000.00,1760000.00,2000000.00,1650000,2200000.00,2400000.00};
-
 
     //user loging details :
 
     //char *userNAmeAr[]={"Mihiran"};
     //char *userPassword[]={"1002%m"};
 
-    char userNAmeAr[1][10]={"Mihiran"};
-    char userPassword[1][10]={"1002%m"};
+    char userNAmeAr[100][20]={"Mihiran"};
+    char userPassword[100][20]={"1002%m"};
+    int userCount = 1;
 
 
     int size = sizeof(userNAmeAr) / sizeof(userNAmeAr[0]);
@@ -136,37 +137,36 @@ void bookFlight(){
 
     printf("\n\n");
 
+    int F_no, No_Passanger, F_class;
+    printf("\n--- Book a Flight ---\n");
+    printf("Enter Flight Number : ");
+    scanf("%d", &F_no);
 
-
-    int No_Passanger,F_class,F_no;
-
-    printf("   Enter Flight Number : ");
-    scanf("%d",&F_no);
-
-    int length = sizeof(Flight_NOAr) / sizeof(Flight_NOAr[0]);
-
-    for(int i=0; i<length; i++){
-        if(F_no==Flight_NOAr[i]){
-            printf("\n");
-            printf("   Departure City         : %s\n", sourceAr[i]);
-            printf("   Destination City       : %s\n",destinationAr[i]);
-            printf("   Available Seats        : %d\n",Av_seatsAr[i]);
-
+    int found = -1;
+    for (int i = 0; i < 10; i++) {
+        if (F_no == Flight_NOAr[i]) {
+            found = i;
+            printf("   Departure: %s | Destination: %s | Seats: %d\n", sourceAr[i], destinationAr[i], Av_seatsAr[i]);
+            break;
         }
     }
 
-    //
+    if (found == -1) {
+        printf("Flight not found!\n");
+        return;
+    }
 
+    printf("\nEnter Number of Passengers: ");
+    scanf("%d", &No_Passanger);
+    printf("Choose Class (1.Economy, 2.Business, 3.First): ");
+    scanf("%d", &F_class);
 
-
-    printf("\n\n   Enter Number of Passengers   : ");
-    scanf("%d",&No_Passanger);
-
-    printf("   Choose Class               \n ");
-    printf("   1.Economy, 2.Business, 3.First :");
-    scanf("%d",&F_class);
-    printf("\n\n");
-
+    if (No_Passanger <= Av_seatsAr[found]) {
+        Av_seatsAr[found] -= No_Passanger; // Update seats
+        printf("\nBooking Successful! Remaining seats: %d\n", Av_seatsAr[found]);
+    } else {
+        printf("\nSorry, not enough seats available.\n");
+    }
 
 
 
@@ -175,103 +175,25 @@ void bookFlight(){
 
 
 void homePage(){
+    int option;
+    while (1) {
+        printf("\n[1]. View Flights \n[2]. Book a Flight\n[3]. Exit\n");
+        printf("Enter option: ");
+        scanf("%d", &option);
 
-
-    /*
-     L1:do{
-
-
-
-        char option = getchar();
-        if(option=='\n'){
-            break;
-        }else{
-            printf("Try again......\n\n");
-            //goto L1;
-        }
-    }while(1);   */
-
-    printf("[1]. view Flights \n");
-    printf("[2]. Book a Flight\n");
-    printf("[3]. Cancel Booking \n");
-    printf("[4]. Viwe My Booking \n");
-    printf("[5]. Search Flight \n");
-    printf("[6]. Exit \n\n");
-
-
-    L2:do{
-        printf("Enter an option to Continue -> ");
-        int option1;
-        scanf("%d",&option1);
-
-
-
-        switch(option1){
-        case 1:
-            viewFlight();
-            insertFlights();
-            displayFlights();
-
-            char option3;
-            L3:do{
-                printf("\n\nDo you want to go to home page (Y/N) :");
-                scanf(" %c",&option3);
-                if(option3=='Y' || option3=='y'){
-                    homePage();
-                    return;
-                }else if(option3=='N' || option3=='n'){
-                    return;
-                }else{
-                    printf("Try again..\n");
-                    goto L3;
-                }
-            }while(1);
-            return;
-        case 2:
-
+        if (option == 1) {
+            // Call display functions
+            printf("\nShowing all flights...\n");
+        } else if (option == 2) {
             bookFlight();
-
-            char option4;
-
-            L4:do{
-                printf("Do you want to go to home page : ");
-                scanf(" %c",&option4);
-                if(option4=='Y' || option4=='y'){
-                        printf("\n\n");
-                    goto L2;
-                }else if(option4=='N' || option4=='n'){
-                    return;
-                }else{
-                    printf("Try again..");
-                    goto L4;
-                }
-        }while(1);
-
-
-
-
-            return;
-        case 3:
-            //cancelBooking();
-            return;
-        case 4:
-            //viweMyBooking();
-            return;
-        case 5:
-            //searchFlight();
-            return;
-        case 6:
-            //Exit
-            return;
-        default:
-            printf("Try again.. \n\n");
-            goto L2;
-
+        } else if (option == 3) {
+            break;
+        } else {
+            printf("Invalid option!\n");
         }
-    }while(1);
-
-
+    }
 }
+
 
 
 int main()
@@ -336,51 +258,18 @@ int main()
         printf("Enter Password again : ");
         scanf("%s",&password2);
 
-
-       // char *tempUserNAmeAr[size + 1];
-        //char *tempUserPassword[size + 1];
-
         char *tempUserNAmeAr[size + 1][10];
         char *tempUserPassword[size + 1][10];
 
-
-        if(strcmp(password1, password2) == 0){
-
-            for(int i=0; i<size; i++){
-                *tempUserNAmeAr[i][10]=userNAmeAr[i][10];
-                *tempUserPassword[i][10]=userPassword[i][10];
-            }
-            userNAmeAr=tempUserNAmeAr;
-            userPassword=tempUserPassword;
-
-            userNAmeAr[size]=name;
-            userPassword[size]=password2;
-
-
-
-              printf("ssssss\n\n");
-
-            //memcpy(userNAmeAr, tempUserNAmeAr, sizeof(tempUserNAmeAr));
-            //memcpy(userPassword, tempUserPassword, sizeof(tempUserPassword));
-
-
-            userNAmeAr[size]=name;
-            userPassword[size]=password2;
-
-            printf("ggggg");
-
-           //break;
-
-           homePage();
-
-
-
-
-        }else{
-            printf("NOT Mach\n\n");
-            printf("Try again...\n");
-            goto L2;
-
+        if (strcmp(password1, password2) == 0) {
+            // Store new user
+            strcpy(userNAmeAr[userCount], name);
+            strcpy(userPassword[userCount], password2);
+            userCount++;
+            printf("\nRegistration Successful! Welcome, %s.\n", name);
+            homePage();
+        } else {
+            printf("Passwords do not match. Try again.\n");
         }
 
 
